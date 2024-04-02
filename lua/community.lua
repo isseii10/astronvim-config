@@ -7,6 +7,17 @@ if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 ---@type LazySpec
 return {
   "AstroNvim/astrocommunity",
+  { import = "astrocommunity.pack.go" },
+  { import = "astrocommunity.pack.typescript" },
+  { import = "astrocommunity.pack.rust" },
   { import = "astrocommunity.pack.lua" },
-  -- import/override with your plugins folder
+  { import = "astrocommunity.pack.python" },
+  { import = "astrocommunity.pack.markdown" },
+  { import = "astrocommunity.pack.proto" },
+  { import = "astrocommunity.pack.toml" },
+  { import = "astrocommunity.pack.terraform" },
+  { import = "astrocommunity.pack.yaml" },
+  { import = "astrocommunity.pack.scala" },
+  { import = "astrocommunity.pack.haskell" },
+  { import = "astrocommunity.pack.docker" },
 }
