@@ -38,13 +38,13 @@ return {
   },
 
   -- You can disable default plugins as follows:
-  { "max397574/better-escape.nvim", enabled = true },
+  { "max397574/better-escape.nvim",   enabled = true },
 
   -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
   {
     "L3MON4D3/LuaSnip",
     config = function(plugin, opts)
-      require "astronvim.plugins.configs.luasnip"(plugin, opts) -- include the default astronvim config that calls the setup call
+      require "astronvim.plugins.configs.luasnip" (plugin, opts) -- include the default astronvim config that calls the setup call
       -- add more custom luasnip configuration such as filetype extend or custom snippets
       local luasnip = require "luasnip"
       luasnip.filetype_extend("javascript", { "javascriptreact" })
@@ -54,7 +54,7 @@ return {
   {
     "windwp/nvim-autopairs",
     config = function(plugin, opts)
-      require "astronvim.plugins.configs.nvim-autopairs"(plugin, opts) -- include the default astronvim config that calls the setup call
+      require "astronvim.plugins.configs.nvim-autopairs" (plugin, opts) -- include the default astronvim config that calls the setup call
       -- add more custom autopairs configuration such as custom rules
       local npairs = require "nvim-autopairs"
       local Rule = require "nvim-autopairs.rule"
@@ -62,30 +62,59 @@ return {
       npairs.add_rules(
         {
           Rule("$", "$", { "tex", "latex" })
-            -- don't add a pair if the next character is %
-            :with_pair(cond.not_after_regex "%%")
-            -- don't add a pair if  the previous character is xxx
-            :with_pair(
-              cond.not_before_regex("xxx", 3)
-            )
-            -- don't move right when repeat character
-            :with_move(cond.none())
-            -- don't delete if the next character is xx
-            :with_del(cond.not_after_regex "xx")
-            -- disable adding a newline when you press <cr>
-            :with_cr(cond.none()),
+          -- don't add a pair if the next character is %
+              :with_pair(cond.not_after_regex "%%")
+          -- don't add a pair if  the previous character is xxx
+              :with_pair(
+                cond.not_before_regex("xxx", 3)
+              )
+          -- don't move right when repeat character
+              :with_move(cond.none())
+          -- don't delete if the next character is xx
+              :with_del(cond.not_after_regex "xx")
+          -- disable adding a newline when you press <cr>
+              :with_cr(cond.none()),
         },
         -- disable for .vim files, but it work for another filetypes
         Rule("a", "a", "-vim")
       )
     end,
   },
-  { "ellisonleao/gruvbox.nvim", priority = 1000, config = true, opts = ... },
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-  { "neanias/everforest-nvim", version = false, lazy = false, priority = 1000 },
-  { "rebelot/kanagawa.nvim", priority = 1000 },
-  { "rose-pine/neovim", name = "rose-pine", priority = 1000 },
-  { "ribru17/bamboo.nvim", lazy = false, priority = 1000 },
-  { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
-  { "craftzdog/solarized-osaka.nvim", lazy = false, priority = 1000, opts = {} },
+  { "ellisonleao/gruvbox.nvim",       priority = 1000,     config = true,   opts = ... },
+  { "catppuccin/nvim",                name = "catppuccin", priority = 1000 },
+  { "neanias/everforest-nvim",        version = false,     lazy = false,    priority = 1000 },
+  { "rebelot/kanagawa.nvim",          priority = 1000 },
+  { "rose-pine/neovim",               name = "rose-pine",  priority = 1000 },
+  { "ribru17/bamboo.nvim",            lazy = false,        priority = 1000 },
+  { "folke/tokyonight.nvim",          lazy = false,        priority = 1000, opts = {} },
+  { "craftzdog/solarized-osaka.nvim", lazy = false,        priority = 1000, opts = {} },
+  {
+    "ray-x/go.nvim",
+    dependencies = {
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" },
+    build = ':lua require("go.install").update_all_sync()',
+  },
+  {
+    "nvim-neotest/neotest",
+    optional = true,
+    dependencies = { "nvim-neotest/neotest-go" },
+    opts = function(_, opts)
+      if not opts.adapters then opts.adapters = {} end
+      table.insert(opts.adapters, require "neotest-go" (require("astrocore").plugin_opts "neotest-go"))
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    optional = true,
+    opts = {
+      formatters_by_ft = {
+        go = { "goimports", "gofumpt" },
+      },
+    },
+  },
 }
