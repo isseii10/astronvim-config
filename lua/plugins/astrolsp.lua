@@ -89,6 +89,11 @@ return {
           },
         },
       },
+      yamlls = {
+        settings = {
+          yaml = { schemas = { kubernetes = "globPattern" } },
+        },
+      },
     },
     -- customize how language servers are attached
     handlers = {
